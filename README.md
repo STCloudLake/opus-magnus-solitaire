@@ -7,16 +7,22 @@ dependency-free web app using the original game's own art and audio.
 It includes an accurate rules engine, a solvable-board generator, and a solver
 fast enough to run interactively.
 
+**Play it: <https://stcloudlake.github.io/opus-magnus-solitaire/>**
+
 ![The board](docs/board.png)
 
 <p align="center">
   <img src="docs/marbles.png" alt="The fourteen marble kinds" width="620">
 </p>
 
-> **The game's art and audio are not in this repository.** They are Opus Magnum's
-> own files and are not ours to redistribute. Everything else — the engine, the
-> solver, the generator, the tools, the tests — is here, and one command pulls
-> the assets out of your own copy of the game. See *Quick start* below.
+> **The online build has no sound, and its help diagrams are blank.** Opus
+> Magnum's music and sound effects (13.8 MB) and its help-panel artwork are not
+> in this repository, so they are missing from the hosted copy. Run it locally
+> with `npm run assets` for the complete thing — see *Quick start* below.
+>
+> The board art and marble textures the hosted build cannot run without *are*
+> committed, about 1.1 MB. See `.gitignore` and `LICENSE` for exactly what and
+> why.
 
 ---
 
