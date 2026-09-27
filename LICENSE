@@ -22,9 +22,21 @@ SOFTWARE.
 
 ---
 
-This licence covers the source code in this repository only.
+This licence covers the source code in this repository only. It does not cover
+any artwork, audio or other assets originating from Opus Magnum.
 
 Opus Magnum, Sigmar's Garden, and all of their art, music, sound effects and
-other assets are the property of Zachtronics LLC. None of that material is
-included here; `tools/copy-assets.mjs` copies it out of a local install for
-personal use, and the resulting `public/assets/` directory is not distributed.
+other assets are the property of Zachtronics LLC, and are not licensed under the
+terms above.
+
+A subset of that material is included in this repository — the board texture and
+the marble layers under `public/assets/textures/` and `public/assets/atoms/` —
+solely so the hosted preview at
+
+    https://stcloudlake.github.io/opus-magnus-solitaire/
+
+can run. It is included as-is, with no licence granted for reuse, and it remains
+the property of Zachtronics LLC.
+
+Everything else is not distributed. Run `npm run assets` with Opus Magnum
+installed to copy the full set out of your own purchase for personal use.
