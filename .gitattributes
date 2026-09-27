@@ -1,0 +1,9 @@
+# Normalise line endings: check in LF, check out whatever the platform wants.
+* text=auto eol=lf
+
+# Binary assets must not be touched.
+*.png binary
+*.jpg binary
+*.ogg binary
+*.wav binary
+*.dat binary

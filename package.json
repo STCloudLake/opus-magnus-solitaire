@@ -1,0 +1,36 @@
+{
+  "name": "opus-magnus-solitaire",
+  "version": "1.0.0",
+  "private": true,
+  "description": "A faithful replica of Sigmar's Garden, the solitaire minigame from Opus Magnum",
+  "type": "module",
+  "scripts": {
+    "assets": "node tools/copy-assets.mjs && node tools/build-help-art.mjs",
+    "setup": "node tools/copy-assets.mjs && node tools/build-help-art.mjs && node tools/build.mjs",
+    "build": "node tools/build.mjs",
+    "watch": "node tools/build.mjs --watch",
+    "serve": "node tools/serve.mjs",
+    "start": "node tools/build.mjs && node tools/serve.mjs",
+    "test": "node tools/selftest.mjs",
+    "test:geometry": "node tools/test_geometry.mjs",
+    "test:offboard": "node tools/test_offboard.mjs",
+    "test:rotation": "node tools/test_rotation.mjs",
+    "test:difficulty": "node tools/test_difficulty.mjs",
+    "test:variants": "node tools/test_variants.mjs",
+    "test:symmetry": "node tools/test_symmetry.mjs",
+    "test:metals": "node tools/test_metals.mjs",
+    "test:metal-legend": "node tools/test_metal_legend.mjs && node tools/test_gold_tier.mjs",
+    "test:legend": "node tools/test_legend.mjs",
+    "test:hint-solution": "node tools/test_hint_solution.mjs",
+    "test:e2e": "node tools/e2e.mjs",
+    "test:calibrate": "node tools/test_calibrate.mjs",
+    "test:audio": "node tools/test_audio.mjs && node tools/test_audio_play.mjs && node tools/test_audio_gating.mjs",
+    "bench": "node tools/bench.mjs 400",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.3",
+    "esbuild": "^0.28.2",
+    "typescript": "^5.9.3"
+  }
+}

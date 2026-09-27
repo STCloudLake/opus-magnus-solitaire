@@ -1,0 +1,885 @@
+/*
+ * Sigmar's Garden — replica styling.
+ *
+ * The palette follows Opus Magnum's own UI: walnut and brass around the
+ * board, aged paper for panels, and the warm cream of the carved tiles.
+ */
+
+:root {
+  --walnut-deep: #14100c;
+  --walnut: #1e1913;
+  --walnut-light: #2b241b;
+  --brass: #b08d4f;
+  --brass-bright: #e0bb72;
+  --paper: #cfc4a6;
+  --paper-dim: #a99e83;
+  --ink: #2a2318;
+  --cream: #e8dfc4;
+  --accent: #7ed6ff;
+  --danger: #d97b5a;
+  --ok: #8fbf6a;
+  --radius: 6px;
+  --serif: 'Palatino Linotype', 'Book Antiqua', Palatino, Georgia, 'Times New Roman', serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  background:
+    radial-gradient(ellipse at 50% 0%, #241d15 0%, #14100c 60%, #0b0906 100%);
+  color: var(--paper);
+  font-family: var(--serif);
+  overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+.sg-app {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  height: 100dvh;
+  padding: 14px clamp(12px, 2vw, 28px) 10px;
+  gap: 10px;
+}
+
+/* ------------------------------- header ------------------------------- */
+
+.sg-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 20px;
+  flex: 0 0 auto;
+  border-bottom: 1px solid #45392a;
+  padding-bottom: 8px;
+}
+
+.sg-title {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.sg-title-main {
+  font-size: clamp(20px, 2.4vw, 30px);
+  letter-spacing: 0.04em;
+  color: var(--brass-bright);
+  text-shadow: 0 1px 0 #000, 0 0 18px rgba(224, 187, 114, 0.18);
+}
+
+.sg-title-sub {
+  font-size: 12px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #8a7a5e;
+}
+
+.sg-stats {
+  display: flex;
+  gap: clamp(14px, 2.4vw, 34px);
+}
+
+.sg-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+}
+
+.sg-stat-label {
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #8a7a5e;
+}
+
+.sg-stat-value {
+  font-size: clamp(15px, 1.6vw, 20px);
+  color: var(--cream);
+  font-variant-numeric: tabular-nums;
+}
+
+/* -------------------------------- main -------------------------------- */
+
+.sg-main {
+  display: flex;
+  gap: clamp(10px, 1.6vw, 22px);
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+.sg-board-wrap {
+  position: relative;
+  flex: 1 1 auto;
+  min-width: 0;
+  border-radius: var(--radius);
+  background:
+    radial-gradient(ellipse at 50% 40%, rgba(70, 58, 42, 0.55), rgba(0, 0, 0, 0) 70%),
+    #17130e;
+  box-shadow:
+    inset 0 0 60px rgba(0, 0, 0, 0.75),
+    0 2px 0 #000;
+  border: 1px solid #3a3024;
+  overflow: hidden;
+}
+
+.sg-canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  touch-action: manipulation;
+}
+
+.sg-canvas.sg-shake {
+  animation: sg-shake 0.22s ease-in-out;
+}
+
+@keyframes sg-shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-4px); }
+  75% { transform: translateX(4px); }
+}
+
+.sg-message {
+  position: absolute;
+  left: 50%;
+  top: 14px;
+  transform: translateX(-50%) translateY(-8px);
+  background: rgba(20, 16, 12, 0.92);
+  border: 1px solid var(--brass);
+  color: var(--cream);
+  padding: 7px 16px;
+  border-radius: 999px;
+  font-size: 13px;
+  letter-spacing: 0.04em;
+  opacity: 0;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  pointer-events: none;
+}
+
+.sg-message.is-visible {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* -------------------------------- side ------------------------------- */
+
+.sg-side {
+  flex: 0 0 clamp(190px, 17vw, 240px);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-height: 0;
+  /* Keep the state panel clear of the toolbar below. */
+  padding-bottom: 4px;
+}
+
+.sg-panel-title {
+  margin: 0;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #8a7a5e;
+  font-weight: 400;
+}
+
+.sg-legend {
+  display: flex;
+  flex-direction: column;
+  /* Distribute the rows down the column instead of clustering them at the top
+     and leaving a dead gap above the state panel. When the window is short the
+     rows compress and the list scrolls. */
+  justify-content: space-between;
+  gap: 1px;
+  padding: 0 4px 0 0;
+  overflow-y: auto;
+  padding-right: 4px;
+  flex: 1 1 auto;
+  min-height: 0;
+  scrollbar-width: thin;
+  scrollbar-color: #4a3d2c transparent;
+}
+
+.sg-legend-row {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 2px 7px;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  color: var(--paper-dim);
+  font-family: inherit;
+  font-size: 13px;
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.14s ease, border-color 0.14s ease, color 0.14s ease;
+}
+
+.sg-legend-row:hover {
+  background: rgba(176, 141, 79, 0.12);
+  border-color: rgba(176, 141, 79, 0.35);
+  color: var(--cream);
+}
+
+.sg-legend-row.is-playable {
+  color: var(--cream);
+}
+
+.sg-legend-row.is-empty {
+  opacity: 0.26;
+  filter: grayscale(0.7);
+}
+
+.sg-legend-chip {
+  flex: 0 0 26px;
+  width: 26px;
+  height: 26px;
+  display: grid;
+  place-items: center;
+}
+
+.sg-legend-chip img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  image-rendering: auto;
+}
+
+.sg-legend-label {
+  flex: 1 1 auto;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sg-legend-count {
+  flex: 0 0 auto;
+  font-variant-numeric: tabular-nums;
+  color: var(--brass);
+  font-size: 12px;
+}
+
+.sg-hint-note {
+  margin: 2px 0 0;
+  font-size: 10.5px;
+  line-height: 1.45;
+  color: #7d6f57;
+}
+
+/* --------------------------- sidebar state ---------------------------- */
+
+.sg-state {
+  /* Never let the state panel shrink or clip; the legend above absorbs the
+     squeeze and scrolls instead. */
+  flex: 0 0 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  padding: 10px 11px 12px;
+  border: 1px solid #3a3024;
+  border-radius: 5px;
+  background:
+    linear-gradient(rgba(255, 255, 255, 0.014), rgba(0, 0, 0, 0.05)),
+    #1c170f;
+}
+
+.sg-state .sg-panel-title {
+  margin: 0;
+}
+
+.sg-state-next {
+  font-size: 12px;
+  line-height: 1.5;
+  color: #cbbf9f;
+}
+
+.sg-state-next strong {
+  color: var(--brass-bright);
+  font-weight: 600;
+}
+
+.sg-state-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 6px 10px;
+  margin: 2px 0 0;
+}
+
+.sg-state-grid > div {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.sg-state-grid dt {
+  font-size: 9px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #7d6f57;
+}
+
+.sg-state-grid dd {
+  margin: 0;
+  font-size: 15px;
+  color: var(--cream);
+  font-variant-numeric: tabular-nums;
+}
+
+.sg-state-progress {
+  height: 3px;
+  border-radius: 2px;
+  background: #2c2417;
+  overflow: hidden;
+}
+
+.sg-state-progress > span {
+  display: block;
+  height: 100%;
+  width: 0;
+  border-radius: 2px;
+  background: linear-gradient(90deg, #6d5a34, var(--brass-bright));
+  transition: width 220ms ease;
+}
+
+/* ------------------------------ toolbar ------------------------------ */
+
+.sg-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  flex: 0 0 auto;
+}
+
+.sg-spacer {
+  flex: 1 1 auto;
+}
+
+.sg-button {
+  font-family: inherit;
+  font-size: 13px;
+  letter-spacing: 0.04em;
+  color: var(--cream);
+  background: linear-gradient(#332a1f, #241d15);
+  border: 1px solid #4d3f2c;
+  border-radius: 4px;
+  padding: 7px 14px;
+  cursor: pointer;
+  transition: background 0.14s ease, border-color 0.14s ease, color 0.14s ease;
+}
+
+.sg-button:hover:not(:disabled) {
+  background: linear-gradient(#443726, #2c2419);
+  border-color: var(--brass);
+  color: #fff3dc;
+}
+
+.sg-button:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+.sg-button:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.sg-button--primary {
+  background: linear-gradient(#6a5427, #493716);
+  border-color: var(--brass);
+  color: #fff1cf;
+}
+
+.sg-button--primary:hover:not(:disabled) {
+  background: linear-gradient(#836830, #5a441c);
+}
+
+.sg-button.is-off {
+  color: #8a7a5e;
+}
+
+.sg-field {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #8a7a5e;
+}
+
+.sg-select {
+  font-family: inherit;
+  font-size: 12px;
+  letter-spacing: normal;
+  text-transform: none;
+  color: var(--cream);
+  background: #241d15;
+  border: 1px solid #4d3f2c;
+  border-radius: 4px;
+  padding: 6px 9px;
+  cursor: pointer;
+}
+
+/* ------------------------------- status ------------------------------ */
+
+.sg-status {
+  flex: 0 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 7px;
+  font-size: 12px;
+  color: #8a7a5e;
+  padding-top: 2px;
+}
+
+.sg-status strong {
+  color: var(--brass-bright);
+  font-weight: 500;
+}
+
+.sg-dot {
+  opacity: 0.5;
+}
+
+/* ------------------------------ overlay ------------------------------ */
+
+.sg-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(8, 6, 4, 0.74);
+  backdrop-filter: blur(3px);
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  z-index: 40;
+  opacity: 0;
+  transition: opacity 0.18s ease;
+}
+
+/*
+ * The `hidden` attribute must win over `display: grid`, otherwise the
+ * invisible overlay keeps covering the page and swallows every click.
+ */
+.sg-overlay[hidden] {
+  display: none;
+}
+
+.sg-overlay.is-visible {
+  opacity: 1;
+}
+
+.sg-overlay-body {
+  width: min(880px, 100%);
+  max-height: 86vh;
+  overflow-y: auto;
+  background:
+    linear-gradient(rgba(255, 255, 255, 0.02), rgba(0, 0, 0, 0.03)),
+    #2a2419;
+  border: 1px solid var(--brass);
+  border-radius: 8px;
+  padding: clamp(18px, 3vw, 30px);
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.75);
+  color: var(--paper);
+  line-height: 1.62;
+  font-size: 14px;
+}
+
+.sg-overlay-body h2 {
+  margin: 0 0 14px;
+  font-size: clamp(18px, 2vw, 24px);
+  color: var(--brass-bright);
+  font-weight: 400;
+  letter-spacing: 0.03em;
+}
+
+.sg-overlay-body p {
+  margin: 0 0 12px;
+}
+
+.sg-overlay-body strong {
+  color: var(--cream);
+  font-weight: 600;
+}
+
+.sg-overlay-body em {
+  color: var(--brass-bright);
+  font-style: italic;
+}
+
+.sg-overlay-body .muted {
+  color: #8f8266;
+  font-size: 13px;
+}
+
+.sg-help-pair {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  margin: 16px 0;
+  align-items: start;
+}
+
+/* A lone figure in the grid would otherwise stretch across both columns and
+   blow its diagram up to twice the size of the paired ones. */
+.sg-help-pair > figure:only-child {
+  grid-column: 1;
+}
+
+.sg-help-pair > figure:only-child img {
+  max-width: 300px;
+  margin: 0 auto;
+}
+
+@media (max-width: 640px) {
+  .sg-help-pair {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.sg-overlay-body figure {
+  margin: 0;
+  background: #cfc4a6;
+  border-radius: 5px;
+  padding: 10px;
+  border: 1px solid #6d5c3e;
+}
+
+.sg-overlay-body figure img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 190px;
+  object-fit: contain;
+  image-rendering: auto;
+}
+
+/* A lone figure in the grid would otherwise stretch across both columns and
+   blow its diagram up to twice the size of the paired ones. */
+.sg-help-pair > figure:only-child {
+  grid-column: 1;
+}
+
+.sg-help-pair > figure:only-child img {
+  max-width: 300px;
+  margin: 0 auto;
+}
+
+@media (max-width: 640px) {
+  .sg-help-pair {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.sg-overlay-body figure {
+  margin: 0;
+  background: #cfc4a6;
+  border-radius: 5px;
+  padding: 10px;
+  border: 1px solid #6d5c3e;
+}
+
+.sg-overlay-body figure img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 190px;
+  object-fit: contain;
+  image-rendering: auto;
+}
+
+.sg-overlay-body figcaption {
+  margin-top: 8px;
+  font-size: 12px;
+  line-height: 1.45;
+  color: #4a3f2b;
+}
+
+.sg-overlay-actions {
+  display: flex;
+  gap: 9px;
+  justify-content: flex-end;
+  margin-top: 20px;
+  flex-wrap: wrap;
+}
+
+.sg-details {
+  margin-top: 18px;
+  border-top: 1px solid #45392a;
+  padding-top: 12px;
+  font-size: 13px;
+  color: #8f8266;
+}
+
+.sg-details summary {
+  cursor: pointer;
+  color: var(--brass);
+  letter-spacing: 0.04em;
+  margin-bottom: 8px;
+}
+
+.sg-details summary:hover {
+  color: var(--brass-bright);
+}
+
+.sg-details p {
+  margin: 0 0 10px;
+  line-height: 1.55;
+}
+
+/* --------------------------- calibration ---------------------------- */
+
+/*
+ * Developer tooling for seating the marbles on the carved tiles. Reached
+ * with `?calibrate` or `sgCalibrate()`, never shown by default.
+ */
+.sg-calib {
+  position: fixed;
+  left: 50%;
+  bottom: 14px;
+  transform: translateX(-50%);
+  z-index: 60;
+  width: min(620px, calc(100vw - 24px));
+  background: rgba(20, 17, 13, 0.96);
+  border: 1px solid var(--brass);
+  border-radius: 8px;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.7);
+  padding: 12px 14px 10px;
+  font-size: 12px;
+  color: var(--paper);
+  backdrop-filter: blur(4px);
+}
+
+.sg-calib[hidden] {
+  display: none;
+}
+
+.sg-calib-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.sg-calib-head strong {
+  color: var(--brass-bright);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+.sg-calib-hint {
+  flex: 1 1 auto;
+  color: #8a7a5e;
+  font-size: 11px;
+}
+
+.sg-calib-hint kbd {
+  background: #2b241b;
+  border: 1px solid #4d3f2c;
+  border-radius: 3px;
+  padding: 0 3px;
+  font-family: inherit;
+  font-size: 10px;
+}
+
+.sg-calib-close {
+  background: none;
+  border: 0;
+  color: #8a7a5e;
+  cursor: pointer;
+  font-size: 13px;
+  line-height: 1;
+  padding: 2px 4px;
+}
+
+.sg-calib-close:hover {
+  color: var(--cream);
+}
+
+.sg-calib-row {
+  display: grid;
+  grid-template-columns: 84px repeat(2, 34px) 1fr repeat(2, 34px) 66px;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 7px;
+}
+
+.sg-calib-row label {
+  color: var(--paper-dim);
+  font-variant-numeric: tabular-nums;
+}
+
+.sg-calib-row button {
+  font-family: inherit;
+  font-size: 12px;
+  color: var(--cream);
+  background: #2b241b;
+  border: 1px solid #4d3f2c;
+  border-radius: 4px;
+  padding: 4px 0;
+  cursor: pointer;
+}
+
+.sg-calib-row button:hover {
+  border-color: var(--brass);
+}
+
+.sg-calib-row input[type='range'] {
+  width: 100%;
+  accent-color: var(--brass);
+}
+
+.sg-calib-row input[type='number'] {
+  font-family: inherit;
+  font-size: 12px;
+  width: 100%;
+  color: var(--cream);
+  background: #241d15;
+  border: 1px solid #4d3f2c;
+  border-radius: 4px;
+  padding: 4px 5px;
+  font-variant-numeric: tabular-nums;
+}
+
+.sg-calib-foot {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-top: 1px solid #3a3024;
+  padding-top: 9px;
+  margin-top: 3px;
+}
+
+.sg-calib-foot button {
+  font-family: inherit;
+  font-size: 12px;
+  color: var(--cream);
+  background: #2b241b;
+  border: 1px solid #4d3f2c;
+  border-radius: 4px;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.sg-calib-foot button:hover {
+  border-color: var(--brass);
+}
+
+.sg-calib-primary {
+  background: linear-gradient(#6a5427, #493716) !important;
+  border-color: var(--brass) !important;
+}
+
+.sg-calib-out {
+  margin-left: auto;
+  color: var(--brass-bright);
+  font-variant-numeric: tabular-nums;
+}
+
+@media (max-width: 620px) {
+  .sg-calib-row {
+    grid-template-columns: 70px repeat(2, 30px) 1fr repeat(2, 30px) 58px;
+  }
+}
+
+/* -------------------------------- boot ------------------------------- */
+
+.sg-boot {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: #0b0906;
+  z-index: 90;
+  transition: opacity 0.5s ease;
+}
+
+.sg-boot.is-gone {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.sg-boot-inner {
+  text-align: center;
+  color: var(--paper-dim);
+}
+
+.sg-boot-title {
+  margin: 0;
+  font-size: 24px;
+  letter-spacing: 0.06em;
+  color: var(--brass-bright);
+}
+
+.sg-boot-sub {
+  margin: 8px 0 0;
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #6f6249;
+}
+
+.sg-boot-rule {
+  width: 120px;
+  height: 1px;
+  margin: 0 auto 16px;
+  background: linear-gradient(90deg, transparent, var(--brass), transparent);
+}
+
+/* ----------------------------- responsive ---------------------------- */
+
+@media (max-width: 860px) {
+  .sg-main {
+    flex-direction: column;
+  }
+
+  .sg-side {
+    flex: 0 0 auto;
+    max-height: 34vh;
+  }
+
+  .sg-legend {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+
+  .sg-legend-row {
+    flex: 0 0 auto;
+    font-size: 12px;
+  }
+
+  .sg-legend-label {
+    display: none;
+  }
+
+  .sg-legend-chip {
+    flex-basis: 22px;
+    width: 22px;
+    height: 22px;
+  }
+
+  .sg-hint-note {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sg-canvas,
+  .sg-overlay,
+  .sg-boot,
+  .sg-message {
+    animation: none !important;
+    transition: none !important;
+  }
+}

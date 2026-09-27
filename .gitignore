@@ -1,0 +1,32 @@
+# Build output
+node_modules/
+public/main.js
+public/main.js.map
+public/engine.js
+public/engine.js.map
+
+# Game assets, copied out of the Opus Magnum install by tools/copy-assets.mjs.
+#
+# These are Opus Magnum's own art, music and sound effects and are NOT ours to
+# redistribute, so they are not in the repository. Run `npm run assets` with the
+# game installed to regenerate everything in here, then `npm run build`.
+#
+# This also covers the two files the help artwork scripts write
+# (`quicksilver_orb.png`, `purification.png`); `npm run assets` rebuilds those
+# from the originals too.
+public/assets/
+
+# Diagnostic images produced by the tools in tools/
+_ref/
+
+# Third-party repositories cloned for reference while reverse-engineering.
+# Not ours, and not part of this project.
+_research_repos/
+
+# Python bytecode from the tools in tools/
+__pycache__/
+*.pyc
+
+# OS cruft
+.DS_Store
+Thumbs.db
