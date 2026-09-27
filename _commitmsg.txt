@@ -1,0 +1,24 @@
+Host the game online, and trim the committed assets to what it needs
+
+The repository now carries the board art and marble layers — about 1.1 MB — so
+that GitHub Pages can serve a playable build:
+
+  public/assets/textures/   board, hover, pulse and spawn textures
+  public/assets/atoms/      the layers the marble sprites are composited from
+
+Previously none of public/assets was committed, which meant a published build
+stopped at "Could not load assets/atoms/salt_diffuse.png" and showed only the
+error screen.
+
+The music and sound effects (13.8 MB), the help-panel diagrams, the tool icons
+and three atom textures nothing references are still excluded. .gitignore now
+uses an allowlist, so a file the game adds later is excluded by default rather
+than silently published.
+
+Adds .github/workflows/deploy-pages.yml, which type-checks, runs the engine
+test-suite, builds the bundle, asserts the required assets survived, and
+publishes public/ to Pages on every push to main.
+
+Note that this does redistribute that subset of Zachtronics artwork, so the
+LICENSE carve-out is narrowed to match: it now names what is included as well
+as what is not.

@@ -5,17 +5,6 @@ public/main.js.map
 public/engine.js
 public/engine.js.map
 
-# Game assets, copied out of the Opus Magnum install by tools/copy-assets.mjs.
-#
-# These are Opus Magnum's own art, music and sound effects and are NOT ours to
-# redistribute, so they are not in the repository. Run `npm run assets` with the
-# game installed to regenerate everything in here, then `npm run build`.
-#
-# This also covers the two files the help artwork scripts write
-# (`quicksilver_orb.png`, `purification.png`); `npm run assets` rebuilds those
-# from the originals too.
-public/assets/
-
 # Diagnostic images produced by the tools in tools/
 _ref/
 
@@ -30,3 +19,95 @@ __pycache__/
 # OS cruft
 .DS_Store
 Thumbs.db
+
+# ---------------------------------------------------------------------------
+# Game assets
+#
+# `npm run assets` copies the board art, audio and marble textures out of an
+# Opus Magnum install into public/assets/. They are Zachtronics' work, not ours,
+# so most of them are kept out of the repository and regenerated locally.
+#
+# One exception: the files the online preview cannot run without are committed,
+# so github.com/STCloudLake/opus-magnus-solitaire is playable on GitHub Pages.
+# That is the board art and the layers the marble sprites are composited from —
+# about 1.1 MB. Without them the app stops at
+# "Could not load assets/atoms/salt_diffuse.png".
+#
+# Still excluded: the 13.8 MB of music and sound effects, the help-panel
+# diagrams, the tool icons, and three atom textures nothing references
+# (air/earth/fire_shadow, repetition_*, whiteout).
+#
+# An allowlist, so a new file the game adds is excluded by default rather than
+# silently published.
+# ---------------------------------------------------------------------------
+public/assets/help/
+
+# Board art and the hover / pulse / spawn textures the renderer uses.
+public/assets/textures/*
+!public/assets/textures/board.png
+!public/assets/textures/hex_hovered.png
+!public/assets/textures/atom_hovered.png
+!public/assets/textures/atom_spawned.png
+!public/assets/textures/pulse_highlight.png
+!public/assets/textures/pulse_shadow_0.png
+!public/assets/textures/pulse_shadow_1.png
+!public/assets/textures/pulse_shadow_2.png
+!public/assets/textures/pulse_shadow_3.png
+
+# Marble layers: the shared lighting rig, and one set per marble kind.
+public/assets/atoms/*
+!public/assets/atoms/elements/
+!public/assets/atoms/copper_diffuse.png
+!public/assets/atoms/copper_lightramp.png
+!public/assets/atoms/copper_rimlight.png
+!public/assets/atoms/copper_symbol.png
+!public/assets/atoms/gold_lightramp.png
+!public/assets/atoms/gold_rimlight.png
+!public/assets/atoms/gold_symbol.png
+!public/assets/atoms/iron_lightramp.png
+!public/assets/atoms/iron_rimlight.png
+!public/assets/atoms/iron_symbol.png
+!public/assets/atoms/lead_lightramp.png
+!public/assets/atoms/lead_rimlight.png
+!public/assets/atoms/lead_symbol.png
+!public/assets/atoms/lighting_bottom.png
+!public/assets/atoms/lighting_left.png
+!public/assets/atoms/lighting_right.png
+!public/assets/atoms/lighting_top.png
+!public/assets/atoms/mors_diffuse.png
+!public/assets/atoms/mors_shade.png
+!public/assets/atoms/mors_symbol.png
+!public/assets/atoms/quicksilver_symbol.png
+!public/assets/atoms/salt_diffuse.png
+!public/assets/atoms/salt_shade.png
+!public/assets/atoms/salt_symbol.png
+!public/assets/atoms/shadow.png
+!public/assets/atoms/silver_lightramp.png
+!public/assets/atoms/silver_rimlight.png
+!public/assets/atoms/silver_symbol.png
+!public/assets/atoms/tin_lightramp.png
+!public/assets/atoms/tin_rimlight.png
+!public/assets/atoms/tin_symbol.png
+!public/assets/atoms/vitae_diffuse.png
+!public/assets/atoms/vitae_shade.png
+!public/assets/atoms/vitae_symbol.png
+
+# Only the four element sets the board actually composites.
+public/assets/atoms/elements/*
+!public/assets/atoms/elements/air_base.png
+!public/assets/atoms/elements/air_base2.png
+!public/assets/atoms/elements/air_fog.png
+!public/assets/atoms/elements/air_symbol.png
+!public/assets/atoms/elements/earth_base.png
+!public/assets/atoms/elements/earth_symbol.png
+!public/assets/atoms/elements/fire_base.png
+!public/assets/atoms/elements/fire_symbol.png
+!public/assets/atoms/elements/water_base.png
+!public/assets/atoms/elements/water_symbol.png
+!public/assets/atoms/elements/env_lights.png
+!public/assets/atoms/elements/specular_highlight.png
+
+# Everything else under assets/ (audio, tool icons) stays local.
+public/assets/*
+!public/assets/textures/
+!public/assets/atoms/
